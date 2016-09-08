@@ -52,7 +52,8 @@ local CloseEvents = {
 }
 
 function MyPlugin:InsertOptions()
-	E.Options.args.BagControl = {
+	E.Options.args.bags.args.BagControl = {
+		order = 8,
 		type = "group",
 		name = "Bag Control",
 		get = function(info) return E.db.BagControl[ info[#info] ] end,
