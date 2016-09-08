@@ -1,10 +1,9 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI);
 local B = E:GetModule("Bags")
-local MyPlugin = E:NewModule("BagControl", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0"); --Create a plugin within ElvUI and adopt AceHook-3.0, AceEvent-3.0 and AceTimer-3.0. We can make use of these later.
-local EP = LibStub("LibElvUIPlugin-1.0") --We can use this to automatically insert our GUI tables when ElvUI_Config is loaded.
-local addonName, addonTable = ... --See http://www.wowinterface.com/forums/showthread.php?t=51502&p=304704&postcount=2
+local MyPlugin = E:NewModule("BagControl", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0");
 
---Default options
+local EP = LibStub("LibElvUIPlugin-1.0")
+local addonName, addonTable = ...
 
 P["BagControl"] = {
 	["Enabled"] = true,
@@ -29,6 +28,7 @@ P["BagControl"] = {
 		["Trade"] = true,
 	},
 }
+
 local OpenEvents = {
 	["MAIL_SHOW"] = "Mail",
 	["MERCHANT_SHOW"] = "Vendor",
@@ -59,10 +59,10 @@ function MyPlugin:InsertOptions()
 		get = function(info) return E.db.BagControl[ info[#info] ] end,
 		set = function(info, value) E.db.BagControl[ info[#info] ] = value; end,
 		args = {
-			intro = {
+			header = {
 				order = 1,
-				type = "description",
-				name = L['Take Control of your Bags'],
+				type = "header",
+				name = L['Bag Control'],
 			},
 			Enabled = {
 				order = 2,
@@ -118,9 +118,9 @@ function MyPlugin:InsertOptions()
 						order = 11,
 						type = "toggle",
 						name = "Trade with Player",
-					}, -- Trade
-				}, -- args
-			}, --Open
+					},
+				},
+			},
 			Close = {
 				order = 12,
 				type = "group",
@@ -169,20 +169,19 @@ function MyPlugin:InsertOptions()
 						order = 20,
 						type = "toggle",
 						name = "Trade with Player",
-					}, --Trade
-				}, -- args
-			}, --Close
-		}, -- args
-	} -- BagControl
+					},
+				},
+			},
+		},
+	}
 end
 
 local function EventHandler(self, event, ...)
 	if OpenEvents[event] then
 		if event == "BANKFRAME_OPENED" then
 			B:OpenBank()
-			--Bags are automatically opened with Bank, so close them if needed
 			if not E.db.BagControl.Open[OpenEvents[event]] then
-				B.BagFrame:Hide() --We can't use regular CloseBags, as that would close the bank as well
+				B.BagFrame:Hide()
 			end
 			return
 		elseif E.db.BagControl.Open[OpenEvents[event]] then
@@ -244,4 +243,4 @@ function MyPlugin:Initialize()
 	MyPlugin:Update()
 end
 
-E:RegisterModule(MyPlugin:GetName()) --Register the module with ElvUI. ElvUI will now call MyPlugin:Initialize() when ElvUI is ready to load our plugin.
+E:RegisterModule(MyPlugin:GetName())
