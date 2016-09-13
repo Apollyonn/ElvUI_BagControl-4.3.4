@@ -56,6 +56,7 @@ function MyPlugin:InsertOptions()
 		order = 8,
 		type = "group",
 		name = "Bag Control",
+		disabled = function() return not E.bags; end,
 		get = function(info) return E.db.BagControl[ info[#info] ] end,
 		set = function(info, value) E.db.BagControl[ info[#info] ] = value; end,
 		args = {
@@ -177,6 +178,8 @@ function MyPlugin:InsertOptions()
 end
 
 local function EventHandler(self, event, ...)
+	if not E.bags then return end
+
 	if OpenEvents[event] then
 		if event == "BANKFRAME_OPENED" then
 			B:OpenBank()
