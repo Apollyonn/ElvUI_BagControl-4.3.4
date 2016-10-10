@@ -15,7 +15,7 @@ P["BagControl"] = {
 		["AH"] = true,
 		["VS"] = true,
 		["TS"] = true,
-		["Trade"] =true,
+		["Trade"] = true
 	},
 	["Close"] = {
 		["Mail"] = true,
@@ -25,8 +25,8 @@ P["BagControl"] = {
 		["AH"] = true,
 		["VS"] = true,
 		["TS"] = true,
-		["Trade"] = true,
-	},
+		["Trade"] = true
+	}
 }
 
 local OpenEvents = {
@@ -37,7 +37,7 @@ local OpenEvents = {
 	["AUCTION_HOUSE_SHOW"] = "AH",
 	["VOID_STORAGE_OPEN"] = "VS",
 	["TRADE_SKILL_SHOW"] = "TS",
-	["TRADE_SHOW"] = "Trade",
+	["TRADE_SHOW"] = "Trade"
 }
 
 local CloseEvents = {
@@ -48,14 +48,14 @@ local CloseEvents = {
 	["AUCTION_HOUSE_CLOSED"] = "AH",
 	["VOID_STORAGE_CLOSE"] = "VS",
 	["TRADE_SKILL_CLOSE"] = "TS",
-	["TRADE_CLOSED"] = "Trade",
+	["TRADE_CLOSED"] = "Trade"
 }
 
 function MyPlugin:InsertOptions()
 	E.Options.args.bags.args.BagControl = {
 		order = 8,
 		type = "group",
-		name = "Bag Control",
+		name = L["Bag Control"],
 		disabled = function() return not E.bags; end,
 		get = function(info) return E.db.BagControl[ info[#info] ] end,
 		set = function(info, value) E.db.BagControl[ info[#info] ] = value; end,
@@ -63,139 +63,139 @@ function MyPlugin:InsertOptions()
 			header = {
 				order = 1,
 				type = "header",
-				name = L['Bag Control'],
+				name = L["Bag Control"]
 			},
 			Enabled = {
 				order = 2,
 				type = "toggle",
 				name = L['Enable'],
-				set = function(info, value) E.db.BagControl[ info[#info] ] = value; MyPlugin:Update() end,
+				set = function(info, value) E.db.BagControl[ info[#info] ] = value; MyPlugin:Update() end
 			},
 			Open = {
 				order = 3,
 				type = "group",
-				name = L['Open bags when the following windows open:'],
+				name = L["Open bags when the following windows open:"],
 				guiInline = true,
 				disabled = function() return not E.db.BagControl.Enabled end,
 				get = function(info) return E.db.BagControl.Open[ info[#info] ] end,
 				set = function(info, value) E.db.BagControl.Open[ info[#info] ] = value; end,
 				args = {
 					Mail = {
-						order = 4,
+						order = 1,
 						type = "toggle",
-						name = "Mailbox",
+						name = "Mailbox"
 					},
 					Vendor = {
-						order = 5,
+						order = 2,
 						type = "toggle",
-						name = "Merchant",
+						name = "Merchant"
 					},
 					Bank = {
-						order = 6,
+						order = 3,
 						type = "toggle",
-						name = "Bank",
+						name = "Bank"
 					},
 					GB = {
-						order = 7,
+						order = 4,
 						type = "toggle",
-						name = "Guild Bank",
+						name = "Guild Bank"
 					},
 					AH = {
-						order = 8,
+						order = 5,
 						type = "toggle",
-						name = "Auction House",
+						name = "Auction House"
 					},
 					VS = {
-						order = 9,
+						order = 6,
 						type = "toggle",
-						name = "Void Storage",
+						name = "Void Storage"
 					},
 					TS = {
-						order = 10,
+						order = 7,
 						type = "toggle",
-						name = "Crafting",
+						name = "Crafting"
 					},
 					Trade = {
-						order = 11,
+						order = 8,
 						type = "toggle",
-						name = "Trade with Player",
-					},
-				},
+						name = "Trade with Player"
+					}
+				}
 			},
 			Close = {
-				order = 12,
+				order = 4,
 				type = "group",
-				name = L['Close bags when the following windows close:'],
+				name = L["Close bags when the following windows close:"],
 				guiInline = true,
 				disabled = function() return not E.db.BagControl.Enabled end,
 				get = function(info) return E.db.BagControl.Close[ info[#info] ] end,
 				set = function(info, value) E.db.BagControl.Close[ info[#info] ] = value; end,
 				args = {
 					Mail = {
-						order = 13,
+						order = 1,
 						type = "toggle",
-						name = "Mailbox",
+						name = "Mailbox"
 					},
 					Vendor = {
-						order = 14,
+						order = 2,
 						type = "toggle",
-						name = "Merchant",
+						name = "Merchant"
 					},
 					Bank = {
-						order = 15,
+						order = 3,
 						type = "toggle",
-						name = "Bank",
+						name = "Bank"
 					},
 					GB = {
-						order = 16,
+						order = 4,
 						type = "toggle",
-						name = "Guild Bank",
+						name = "Guild Bank"
 					},
 					AH = {
-						order = 17,
+						order = 5,
 						type = "toggle",
-						name = "Auction House",
+						name = "Auction House"
 					},
 					VS = {
-						order = 18,
+						order = 6,
 						type = "toggle",
-						name = "Void Storage",
+						name = "Void Storage"
 					},
 					TS = {
-						order = 19,
+						order = 7,
 						type = "toggle",
-						name = "Crafting",
+						name = "Crafting"
 					},
 					Trade = {
-						order = 20,
+						order = 8,
 						type = "toggle",
-						name = "Trade with Player",
-					},
-				},
-			},
-		},
+						name = "Trade with Player"
+					}
+				}
+			}
+		}
 	}
 end
 
 local function EventHandler(self, event, ...)
-	if not E.bags then return end
+	if(not E.bags) then return end
 
-	if OpenEvents[event] then
-		if event == "BANKFRAME_OPENED" then
+	if(OpenEvents[event]) then
+		if(event == "BANKFRAME_OPENED") then
 			B:OpenBank()
-			if not E.db.BagControl.Open[OpenEvents[event]] then
+			if(not E.db.BagControl.Open[OpenEvents[event]]) then
 				B.BagFrame:Hide()
 			end
 			return
-		elseif E.db.BagControl.Open[OpenEvents[event]] then
+		elseif(E.db.BagControl.Open[OpenEvents[event]]) then
 			B:OpenBags()
 			return
 		else
 			B:CloseBags()
 			return
 		end
-	elseif CloseEvents[event] then
-		if E.db.BagControl.Close[CloseEvents[event]] then
+	elseif(CloseEvents[event]) then
+		if(E.db.BagControl.Close[CloseEvents[event]]) then
 			B:CloseBags()
 			return
 		else
