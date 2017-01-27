@@ -6,3 +6,4 @@
 ## RequiredDeps: ElvUI
 
 ElvUI_BagControl.lua
+Locales.lua

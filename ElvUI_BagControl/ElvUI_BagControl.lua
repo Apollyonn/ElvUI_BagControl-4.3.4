@@ -68,7 +68,7 @@ function MyPlugin:InsertOptions()
 			Enabled = {
 				order = 2,
 				type = "toggle",
-				name = L['Enable'],
+				name = L["Enable"],
 				set = function(info, value) E.db.BagControl[ info[#info] ] = value; MyPlugin:Update() end
 			},
 			Open = {
@@ -83,42 +83,42 @@ function MyPlugin:InsertOptions()
 					Mail = {
 						order = 1,
 						type = "toggle",
-						name = "Mailbox"
+						name = L["Mailbox"]
 					},
 					Vendor = {
 						order = 2,
 						type = "toggle",
-						name = "Merchant"
+						name = L["Merchant"]
 					},
 					Bank = {
 						order = 3,
 						type = "toggle",
-						name = "Bank"
+						name = L["Bank"]
 					},
 					GB = {
 						order = 4,
 						type = "toggle",
-						name = "Guild Bank"
+						name = L["Guild Bank"]
 					},
 					AH = {
 						order = 5,
 						type = "toggle",
-						name = "Auction House"
+						name = L["Auction House"]
 					},
 					VS = {
 						order = 6,
 						type = "toggle",
-						name = "Void Storage"
+						name = L["Void Storage"]
 					},
 					TS = {
 						order = 7,
 						type = "toggle",
-						name = "Crafting"
+						name = L["Crafting"]
 					},
 					Trade = {
 						order = 8,
 						type = "toggle",
-						name = "Trade with Player"
+						name = L["Trade with Player"]
 					}
 				}
 			},
@@ -134,42 +134,42 @@ function MyPlugin:InsertOptions()
 					Mail = {
 						order = 1,
 						type = "toggle",
-						name = "Mailbox"
+						name = L["Mailbox"]
 					},
 					Vendor = {
 						order = 2,
 						type = "toggle",
-						name = "Merchant"
+						name = L["Merchant"]
 					},
 					Bank = {
 						order = 3,
 						type = "toggle",
-						name = "Bank"
+						name = L["Bank"]
 					},
 					GB = {
 						order = 4,
 						type = "toggle",
-						name = "Guild Bank"
+						name = L["Guild Bank"]
 					},
 					AH = {
 						order = 5,
 						type = "toggle",
-						name = "Auction House"
+						name = L["Auction House"]
 					},
 					VS = {
 						order = 6,
 						type = "toggle",
-						name = "Void Storage"
+						name = L["Void Storage"]
 					},
 					TS = {
 						order = 7,
 						type = "toggle",
-						name = "Crafting"
+						name = L["Crafting"]
 					},
 					Trade = {
 						order = 8,
 						type = "toggle",
-						name = "Trade with Player"
+						name = L["Trade with Player"]
 					}
 				}
 			}
