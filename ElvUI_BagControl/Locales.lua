@@ -17,7 +17,7 @@ if GetLocale() == "enUS" then return end
 -- German
 local L = LibStub("AceLocale-3.0"):NewLocale("ElvUI", "deDE")
 if L then
-	L["Auction House"] = true;
+	L["Auction House"] = "Auktionshaus"
 	L["Bag Control"] = true;
 	L["Close bags when the following windows close:"] = true;
 	L["Crafting"] = true;
@@ -43,7 +43,7 @@ end
 -- French
 local L = LibStub("AceLocale-3.0"):NewLocale("ElvUI", "frFR")
 if L then
-	L["Auction House"] = true;
+	L["Auction House"] = "Hôtel des Ventes"
 	L["Bag Control"] = true;
 	L["Close bags when the following windows close:"] = true;
 	L["Crafting"] = true;
@@ -82,7 +82,7 @@ end
 -- Russian
 local L = LibStub("AceLocale-3.0"):NewLocale("ElvUI", "ruRU")
 if L then
-	L["Auction House"] = true;
+	L["Auction House"] = "Аукцион"
 	L["Bag Control"] = true;
 	L["Close bags when the following windows close:"] = true;
 	L["Crafting"] = true;
@@ -108,7 +108,7 @@ end
 --Chinese (Taiwan, traditional)
 local L = LibStub("AceLocale-3.0"):NewLocale("ElvUI", "zhTW")
 if L then
-	L["Auction House"] = true;
+	L["Auction House"] = "拍賣場"
 	L["Bag Control"] = true;
 	L["Close bags when the following windows close:"] = true;
 	L["Crafting"] = true;
