@@ -1,9 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI);
+local BC = E:NewModule("BagControl", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0");
 local B = E:GetModule("Bags")
-local MyPlugin = E:NewModule("BagControl", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0");
 
 local EP = LibStub("LibElvUIPlugin-1.0")
 local addonName, addonTable = ...
+
+local format = string.format
 
 P["BagControl"] = {
 	["Enabled"] = true,
@@ -29,6 +31,137 @@ P["BagControl"] = {
 	}
 }
 
+local function ColorizeSettingName(settingName)
+	return format("|cff1784d1%s|r", settingName)
+end
+
+function BC:InsertOptions()
+	E.Options.args.BagControl = {
+		order = 53,
+		type = "group",
+		childGroups = "tab",
+		name = ColorizeSettingName(L["Bag Control"]),
+		get = function(info) return E.db.BagControl[ info[#info] ] end,
+		set = function(info, value) E.db.BagControl[ info[#info] ] = value; end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Bag Control"]
+			},
+			Enabled = {
+				order = 2,
+				type = "toggle",
+				name = L["Enable"],
+				set = function(info, value) E.db.BagControl[ info[#info] ] = value; BC:Update() end,
+				disabled = function() return not E.bags end
+			},
+			Open = {
+				order = 3,
+				type = "group",
+				name = L["Open bags when the following windows open:"],
+				guiInline = true,
+				get = function(info) return E.db.BagControl.Open[ info[#info] ] end,
+				set = function(info, value) E.db.BagControl.Open[ info[#info] ] = value; end,
+				disabled = function() return not E.bags or not E.db.BagControl.Enabled end,
+				args = {
+					Mail = {
+						order = 1,
+						type = "toggle",
+						name = MINIMAP_TRACKING_MAILBOX
+					},
+					Vendor = {
+						order = 2,
+						type = "toggle",
+						name = MERCHANT
+					},
+					Bank = {
+						order = 3,
+						type = "toggle",
+						name = L["Bank"]
+					},
+					GB = {
+						order = 4,
+						type = "toggle",
+						name = GUILD_BANK
+					},
+					AH = {
+						order = 5,
+						type = "toggle",
+						name = BUTTON_LAG_AUCTIONHOUSE
+					},
+					VS = {
+						order = 6,
+						type = "toggle",
+						name = VOID_STORAGE
+					},
+					TS = {
+						order = 7,
+						type = "toggle",
+						name = TRADESKILLS
+					},
+					Trade = {
+						order = 8,
+						type = "toggle",
+						name = TRADE
+					}
+				}
+			},
+			Close = {
+				order = 4,
+				type = "group",
+				name = L["Close bags when the following windows close:"],
+				guiInline = true,
+				get = function(info) return E.db.BagControl.Close[ info[#info] ] end,
+				set = function(info, value) E.db.BagControl.Close[ info[#info] ] = value; end,
+				disabled = function() return not E.bags or not E.db.BagControl.Enabled end,
+				args = {
+					Mail = {
+						order = 1,
+						type = "toggle",
+						name = MINIMAP_TRACKING_MAILBOX
+					},
+					Vendor = {
+						order = 2,
+						type = "toggle",
+						name = MERCHANT
+					},
+					Bank = {
+						order = 3,
+						type = "toggle",
+						name = L["Bank"]
+					},
+					GB = {
+						order = 4,
+						type = "toggle",
+						name = GUILD_BANK
+					},
+					AH = {
+						order = 5,
+						type = "toggle",
+						name = BUTTON_LAG_AUCTIONHOUSE
+					},
+					VS = {
+						order = 6,
+						type = "toggle",
+						name = VOID_STORAGE
+					},
+					TS = {
+						order = 7,
+						type = "toggle",
+						name = TRADESKILLS
+					},
+					Trade = {
+						order = 8,
+						type = "toggle",
+						name = TRADE
+					}
+				}
+			}
+		}
+	}
+end
+
 local OpenEvents = {
 	["MAIL_SHOW"] = "Mail",
 	["MERCHANT_SHOW"] = "Vendor",
@@ -50,132 +183,6 @@ local CloseEvents = {
 	["TRADE_SKILL_CLOSE"] = "TS",
 	["TRADE_CLOSED"] = "Trade"
 }
-
-function MyPlugin:InsertOptions()
-	E.Options.args.bags.args.BagControl = {
-		order = 8,
-		type = "group",
-		name = L["Bag Control"],
-		disabled = function() return not E.bags; end,
-		get = function(info) return E.db.BagControl[ info[#info] ] end,
-		set = function(info, value) E.db.BagControl[ info[#info] ] = value; end,
-		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Bag Control"]
-			},
-			Enabled = {
-				order = 2,
-				type = "toggle",
-				name = L["Enable"],
-				set = function(info, value) E.db.BagControl[ info[#info] ] = value; MyPlugin:Update() end
-			},
-			Open = {
-				order = 3,
-				type = "group",
-				name = L["Open bags when the following windows open:"],
-				guiInline = true,
-				disabled = function() return not E.db.BagControl.Enabled end,
-				get = function(info) return E.db.BagControl.Open[ info[#info] ] end,
-				set = function(info, value) E.db.BagControl.Open[ info[#info] ] = value; end,
-				args = {
-					Mail = {
-						order = 1,
-						type = "toggle",
-						name = L["Mailbox"]
-					},
-					Vendor = {
-						order = 2,
-						type = "toggle",
-						name = L["Merchant"]
-					},
-					Bank = {
-						order = 3,
-						type = "toggle",
-						name = L["Bank"]
-					},
-					GB = {
-						order = 4,
-						type = "toggle",
-						name = L["Guild Bank"]
-					},
-					AH = {
-						order = 5,
-						type = "toggle",
-						name = L["Auction House"]
-					},
-					VS = {
-						order = 6,
-						type = "toggle",
-						name = L["Void Storage"]
-					},
-					TS = {
-						order = 7,
-						type = "toggle",
-						name = L["Crafting"]
-					},
-					Trade = {
-						order = 8,
-						type = "toggle",
-						name = L["Trade with Player"]
-					}
-				}
-			},
-			Close = {
-				order = 4,
-				type = "group",
-				name = L["Close bags when the following windows close:"],
-				guiInline = true,
-				disabled = function() return not E.db.BagControl.Enabled end,
-				get = function(info) return E.db.BagControl.Close[ info[#info] ] end,
-				set = function(info, value) E.db.BagControl.Close[ info[#info] ] = value; end,
-				args = {
-					Mail = {
-						order = 1,
-						type = "toggle",
-						name = L["Mailbox"]
-					},
-					Vendor = {
-						order = 2,
-						type = "toggle",
-						name = L["Merchant"]
-					},
-					Bank = {
-						order = 3,
-						type = "toggle",
-						name = L["Bank"]
-					},
-					GB = {
-						order = 4,
-						type = "toggle",
-						name = L["Guild Bank"]
-					},
-					AH = {
-						order = 5,
-						type = "toggle",
-						name = L["Auction House"]
-					},
-					VS = {
-						order = 6,
-						type = "toggle",
-						name = L["Void Storage"]
-					},
-					TS = {
-						order = 7,
-						type = "toggle",
-						name = L["Crafting"]
-					},
-					Trade = {
-						order = 8,
-						type = "toggle",
-						name = L["Trade with Player"]
-					}
-				}
-			}
-		}
-	}
-end
 
 local function EventHandler(self, event, ...)
 	if(not E.bags) then return end
@@ -233,7 +240,7 @@ local function UnregisterMyEvents()
 	eventsRegistered = false
 end
 
-function MyPlugin:Update()
+function BC:Update()
 	if E.db.BagControl.Enabled and not eventsRegistered then
 		RegisterMyEvents()
 	elseif not E.db.BagControl.Enabled and eventsRegistered then
@@ -241,9 +248,13 @@ function MyPlugin:Update()
 	end
 end
 
-function MyPlugin:Initialize()
-	EP:RegisterPlugin(addonName, MyPlugin.InsertOptions)
-	MyPlugin:Update()
+function BC:Initialize()
+	EP:RegisterPlugin(addonName, BC.InsertOptions)
+	BC:Update()
 end
 
-E:RegisterModule(MyPlugin:GetName())
+local function InitializeCallback()
+	BC:Initialize()
+end
+
+E:RegisterModule(BC:GetName(), InitializeCallback)
