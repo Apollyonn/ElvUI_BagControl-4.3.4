@@ -1,9 +1,10 @@
 ## Interface: 40300
 ## Author: Doc309 
 ## Version: 2.1
-## Title: |cff1784d1E|r|cffe5e3e3lvUI|r |cff1784d1B|r|cffe5e3e3ag|r|cff1784d1C|r|cffe5e3e3ontrol|r
-## Notes: ElvUI Plugin Framework.
+## Title: |cffff7000E|r|cffe5e3e3lvUI|r |cffff7000B|r|cffe5e3e3ag|r |cffff7000C|r|cffe5e3e3ontrol|r
 ## RequiredDeps: ElvUI
 
+Locales\Load_Locales.xml
+Settings\Load_Settings.xml
 ElvUI_BagControl.lua
-Locales.lua
+Config\Load_Config.xml
