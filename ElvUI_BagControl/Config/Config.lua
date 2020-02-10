@@ -1,12 +1,6 @@
 local E, _, V, P, G = unpack(ElvUI)
-local L = E.Libs.ACL:GetLocale("ElvUI", E.global.general.locale or "enUS")
+local L = E.Libs.ACL:GetLocale("ElvUI", E.global.general.locale)
 local BC = E:GetModule("BagControl")
-
-local format = string.format
-
-local function ColorizeSettingName(settingName)
-	return format("|cff1784d1%s|r", settingName)
-end
 
 function BC:InsertOptions()
 	local ACD = E.Libs.AceConfigDialog
@@ -16,56 +10,26 @@ function BC:InsertOptions()
 			order = 50,
 			type = "group",
 			name = "|cffff7000E|r|cffe5e3e3lvUI |r|cffff7000P|r|cffe5e3e3lugins|r",
-			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = "|cffff7000E|r|cffe5e3e3lvUI |r|cffff7000P|r|cffe5e3e3lugins|r"
-				},
-				bagControlShortcut = {
-					type = "execute",
-					name = ColorizeSettingName(L["Bag Control"]),
-					func = function()
-						if IsAddOnLoaded("ElvUI_OptionsUI") then
-							ACD:SelectGroup("ElvUI", "elvuiPlugins", "bagControl")
-						end
-					end
-				}
-			}
-		}
-	elseif not E.Options.args.elvuiPlugins.args.bagControlShortcut then
-		E.Options.args.elvuiPlugins.args.bagControlShortcut = {
-			type = "execute",
-			name = ColorizeSettingName(L["Bag Control"]),
-			func = function()
-				if IsAddOnLoaded("ElvUI_OptionsUI") then
-					ACD:SelectGroup("ElvUI", "elvuiPlugins", "bagControl")
-				end
-			end
+			args = {}
 		}
 	end
 
 	E.Options.args.elvuiPlugins.args.bagControl = {
 		type = "group",
 		childGroups = "tab",
-		name = ColorizeSettingName(L["Bag Control"]),
+		name = "|cffff7000B|r|cffe5e3e3ag |r|cffff7000C|r|cffe5e3e3ontrol|r",
 		get = function(info) return E.db.BagControl[info[#info]] end,
 		set = function(info, value) E.db.BagControl[info[#info]] = value end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Bag Control"]
-			},
 			Enabled = {
-				order = 2,
+				order = 1,
 				type = "toggle",
 				name = L["ENABLE"],
 				set = function(info, value) E.db.BagControl[info[#info]] = value BC:Update() end,
 				disabled = function() return not E.Bags.Initialized end
 			},
 			Open = {
-				order = 3,
+				order = 2,
 				type = "group",
 				name = L["Open bags when the following windows open:"],
 				guiInline = true,
@@ -116,7 +80,7 @@ function BC:InsertOptions()
 				}
 			},
 			Close = {
-				order = 4,
+				order = 3,
 				type = "group",
 				name = L["Close bags when the following windows close:"],
 				guiInline = true,
